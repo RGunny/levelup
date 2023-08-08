@@ -1,0 +1,23 @@
+## Server
+server:
+  port: 8080
+
+## Spring
+spring:
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+        ddl-auto: create
+
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/Study/h2/db/levelup
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+
+# Logging
+logging:
+  level:
+    org.hibernate.SQL: debug
