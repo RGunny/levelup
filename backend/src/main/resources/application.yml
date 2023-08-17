@@ -4,20 +4,60 @@ server:
 
 ## Spring
 spring:
-  jpa:
-    properties:
-      hibernate:
-        show_sql: false
-        format_sql: true
-        ddl-auto: create
+  profiles:
+    default: local
 
   datasource:
-    url: jdbc:h2:tcp://localhost/~/Study/h2/db/levelup
+    url: jdbc:h2:mem:~/levelupApplication
+#    url: jdbc:h2:tcp://localhost/~/Study/h2/db/levelup
     username: sa
     password: sa
     driver-class-name: org.h2.Driver
+
+# depend human error
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: none
 
 # Logging
 logging:
   level:
     org.hibernate.SQL: debug
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true # v2.5~ Hibernate 초기화 이후 data.sql 실행
+
+  h2:
+    console:
+      enabled: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  sql:
+    init:
+      mode: never
