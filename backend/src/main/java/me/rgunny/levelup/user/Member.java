@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
-public class User {
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +16,10 @@ public class User {
 
     private String name;
 
-    public User() {
+    public Member() {
     }
 
-    public User(String name) {
+    public Member(String name) {
         this.name = name;
     }
 }
