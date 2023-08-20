@@ -19,4 +19,11 @@ public class Account {
         this.balance = balance;
     }
 
+    public static Account from(AccountCreate accountCreate) {
+        return Account.builder()
+                .password(accountCreate.getPassword())
+                .name(accountCreate.getName())
+                .balance(0L)
+                .build();
+    }
 }
