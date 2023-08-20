@@ -21,6 +21,7 @@ public class Account {
 
     public static Account from(AccountCreate accountCreate) {
         return Account.builder()
+                .id(accountCreate.getId())
                 .password(accountCreate.getPassword())
                 .name(accountCreate.getName())
                 .balance(0L)
