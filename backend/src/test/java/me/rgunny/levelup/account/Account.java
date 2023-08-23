@@ -27,4 +27,13 @@ public class Account {
                 .balance(0L)
                 .build();
     }
+
+    public Account update(AccountUpdate accountUpdate) {
+        return Account.builder()
+                .id(id)
+                .name(accountUpdate.getName())
+                .password(accountUpdate.getPassword())
+                .balance(balance)
+                .build();
+    }
 }
