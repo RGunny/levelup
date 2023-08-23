@@ -7,9 +7,9 @@ import lombok.Getter;
 @Builder
 public class AccountCreate {
 
-    private Long id;
-    private String password;
-    private String name;
+    private final Long id;
+    private final String password;
+    private final String name;
 
     public static AccountCreate from(Account account) {
         return AccountCreate.builder()
