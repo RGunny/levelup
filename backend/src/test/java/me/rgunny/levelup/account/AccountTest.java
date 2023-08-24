@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class AccountTest {
 
@@ -22,6 +21,7 @@ class AccountTest {
 
         // then
         assertThat(account.getId()).isEqualTo(1L);
+        assertThat(account.getNumber()).isEqualTo("0-1234-5678-9");
         assertThat(account.getName()).isEqualTo("나라사랑계좌");
         assertThat(account.getPassword()).isEqualTo("1q2w3e4r!@");
     }
@@ -32,6 +32,7 @@ class AccountTest {
         // given
         Account account = Account.from(getAccountCreate());
         AccountUpdate accountUpdate = AccountUpdate.builder()
+                .number("0-1234-5678-9")
                 .name("나라안사랑계좌")
                 .password("qweqwe12#")
                 .build();
@@ -39,6 +40,7 @@ class AccountTest {
         Account updatedAccount = account.update(accountUpdate);
 
         // then
+        assertThat(updatedAccount.getNumber()).isEqualTo("0-1234-5678-9");
         assertThat(updatedAccount.getName()).isEqualTo("나라안사랑계좌");
         assertThat(updatedAccount.getPassword()).isEqualTo("qweqwe12#");
     }
@@ -46,6 +48,7 @@ class AccountTest {
     private AccountCreate getAccountCreate() {
         return AccountCreate.builder()
                 .id(1L)
+                .number("0-1234-5678-9")
                 .name("나라사랑계좌")
                 .password("1q2w3e4r!@")
                 .build();
