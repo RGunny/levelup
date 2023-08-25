@@ -1,4 +1,4 @@
-package me.rgunny.levelup.account;
+package me.rgunny.levelup.account.domain;
 
 import lombok.Builder;
 import lombok.Getter;

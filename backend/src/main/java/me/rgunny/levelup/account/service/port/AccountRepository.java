@@ -1,4 +1,6 @@
-package me.rgunny.levelup.account;
+package me.rgunny.levelup.account.service.port;
+
+import me.rgunny.levelup.account.domain.Account;
 
 import java.util.Optional;
 

@@ -1,5 +1,8 @@
 package me.rgunny.levelup.account;
 
+import me.rgunny.levelup.account.domain.Account;
+import me.rgunny.levelup.account.domain.AccountCreate;
+import me.rgunny.levelup.account.domain.AccountUpdate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -7,10 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class AccountTest {
 
-    private AccountService accountService;
-
-
-    @DisplayName("AccountCreate 로 계좌를 생성 할 수 있다.")
+    @DisplayName("AccountCreate 로 Account 객체를 생성 할 수 있다.")
     @Test
     void createAccountByAccountCreate(){
         // given
@@ -26,7 +26,7 @@ class AccountTest {
         assertThat(account.getPassword()).isEqualTo("1q2w3e4r!@");
     }
 
-    @DisplayName("AccountUpdate 로 계좌를 수정 할 수 있다.")
+    @DisplayName("AccountUpdate 로 Account 객체를 수정 할 수 있다.")
     @Test
     void updateAccountByAccountUpdate(){
         // given

@@ -1,7 +1,7 @@
 package me.rgunny.levelup.mock;
 
-import me.rgunny.levelup.account.Account;
-import me.rgunny.levelup.account.AccountRepository;
+import me.rgunny.levelup.account.domain.Account;
+import me.rgunny.levelup.account.service.port.AccountRepository;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
