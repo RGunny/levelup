@@ -11,7 +11,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AccountRepositoryImpl implements AccountRepository {
 
-    private AccountJpaRepository accountJpaRepository;
+    private final AccountJpaRepository accountJpaRepository;
 
     @Override
     public Optional<Account> findById(Long id) {
