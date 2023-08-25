@@ -1,10 +1,14 @@
 package me.rgunny.levelup.account.infrastructure;
 
+import lombok.RequiredArgsConstructor;
 import me.rgunny.levelup.account.domain.Account;
 import me.rgunny.levelup.account.service.port.AccountRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
+@RequiredArgsConstructor
 public class AccountRepositoryImpl implements AccountRepository {
 
     private AccountJpaRepository accountJpaRepository;
