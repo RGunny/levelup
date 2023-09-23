@@ -1,4 +1,4 @@
-package me.rgunny.levelup.transfer;
+package me.rgunny.levelup.account.transfer.domain;
 
 import lombok.Builder;
 import lombok.Getter;

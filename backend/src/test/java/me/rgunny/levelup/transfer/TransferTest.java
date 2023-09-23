@@ -1,5 +1,7 @@
 package me.rgunny.levelup.transfer;
 
+import me.rgunny.levelup.account.transfer.domain.Transfer;
+import me.rgunny.levelup.account.transfer.domain.TransferCreate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
