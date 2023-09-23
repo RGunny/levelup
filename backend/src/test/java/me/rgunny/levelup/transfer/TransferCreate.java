@@ -2,7 +2,6 @@ package me.rgunny.levelup.transfer;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
 
@@ -12,11 +11,15 @@ public class TransferCreate {
 
     private final Long id;
     private final Long amount;
+    private final Long fromId;
+    private final Long toId;
     private final LocalDateTime createdDate;
 
-    public TransferCreate(Long id, Long amount, LocalDateTime createdDate) {
+    public TransferCreate(Long id, Long amount, Long fromId, Long toId, LocalDateTime createdDate) {
         this.id = id;
         this.amount = amount;
-        this.createdDate = LocalDateTime.now();
+        this.fromId = fromId;
+        this.toId = toId;
+        this.createdDate = createdDate;
     }
 }
