@@ -45,6 +45,20 @@ class AccountTest {
         assertThat(updatedAccount.getPassword()).isEqualTo("qweqwe12#");
     }
 
+    @DisplayName("계좌에 입금 시 금액만큼 잔고가 증가한다.")
+    @Test
+    void depositTest(){
+        // given
+        Account account = Account.from(getAccountCreate());
+        long amount = 10000;
+
+        // when
+        Account depositedAccount = account.deposit(amount);
+
+        // then
+        assertThat(account.getBalance() + amount).isEqualTo(depositedAccount.getBalance());
+    }
+
     private AccountCreate getAccountCreate() {
         return AccountCreate.builder()
                 .id(1L)
