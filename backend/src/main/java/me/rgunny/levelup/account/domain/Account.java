@@ -40,4 +40,15 @@ public class Account {
                 .balance(balance)
                 .build();
     }
+
+    public Account deposit(long amount) {
+        return Account.builder()
+                .id(id)
+                .number(number)
+                .password(password)
+                .name(name)
+                .balance(balance + amount)
+                .build();
+    }
+
 }
