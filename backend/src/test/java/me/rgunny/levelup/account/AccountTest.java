@@ -3,6 +3,7 @@ package me.rgunny.levelup.account;
 import me.rgunny.levelup.account.domain.Account;
 import me.rgunny.levelup.account.domain.AccountCreate;
 import me.rgunny.levelup.account.domain.AccountUpdate;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -50,13 +51,42 @@ class AccountTest {
     void depositTest(){
         // given
         Account account = Account.from(getAccountCreate());
-        long amount = 10000;
+        long amount = 10000L;
 
         // when
         Account depositedAccount = account.deposit(amount);
 
         // then
         assertThat(account.getBalance() + amount).isEqualTo(depositedAccount.getBalance());
+    }
+
+    @DisplayName("계좌의 잔고 금액을 초과하지 않을 경우 출금할 수 있다.")
+    @Test
+    void withdrawWhenNotExceedBalance(){
+        // given
+        Account account = Account.from(getAccountCreate());
+        long amount = 10000L;
+        account = account.deposit(amount);
+
+        // when
+        Account withdrawedAccount = account.withdraw(10000L);
+
+        // then
+        assertThat(withdrawedAccount.getBalance()).isEqualTo(0L);
+    }
+    @DisplayName("계좌의 잔고 금액을 초과할 경우 IllegalArgumentException 이 발생한다.")
+    @Test
+    void withdrawOccurExceptionWhenExceedBalance(){
+        // given
+        Account account = Account.from(getAccountCreate());
+        long amount = 10000;
+        Account depositedAccount = account.deposit(amount);
+
+        // when
+        // then
+        Assertions.assertThatThrownBy(() -> depositedAccount.withdraw(20000))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("출금 금액이 잔고를 초과할 수 없습니다.");
     }
 
     private AccountCreate getAccountCreate() {

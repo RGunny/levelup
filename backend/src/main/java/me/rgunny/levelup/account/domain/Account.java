@@ -51,4 +51,19 @@ public class Account {
                 .build();
     }
 
+    // TODO: Transfer로 Account에 출금&입금 이벤트를 발생시킨다. 하지만 Account 는 출금&입금 각각의 도메인서비스만 제공하는 것이고 Transfer와는 상관없는 분리된 영역이다.
+    public Account withdraw(long amount) {
+        if (balance - amount < 0) {
+            throw new IllegalArgumentException("출금 금액이 잔고를 초과할 수 없습니다.");
+        }
+
+        return Account.builder()
+                .id(id)
+                .number(number)
+                .password(password)
+                .name(name)
+                .balance(balance - amount)
+                .build();
+    }
+
 }
