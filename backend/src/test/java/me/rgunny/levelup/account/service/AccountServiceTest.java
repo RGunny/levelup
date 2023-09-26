@@ -85,6 +85,19 @@ class AccountServiceTest {
         assertThat(account.getBalance()).isEqualTo(10000L);
     }
 
+    @DisplayName("amount를 계좌에서 출금하면 기존잔고에서 amount만큼 잔고가 차감된다.")
+    @Test
+    void withdrawSuccessTest(){
+        // given
+        long amount = 10000L;
+
+        // when
+        Account account = accountService.withdraw(2L, amount);
+
+        // then
+        assertThat(account.getBalance()).isEqualTo(0L);
+    }
+
     private AccountCreate getAccountCreate() {
         return AccountCreate.builder()
                 .id(1L)
