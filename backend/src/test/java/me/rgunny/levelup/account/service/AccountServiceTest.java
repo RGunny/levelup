@@ -32,7 +32,7 @@ class AccountServiceTest {
                 .number("2-1234-5678-9")
                 .password("1q2w3e4r!@")
                 .name("나라사랑계좌2")
-                .balance(0L)
+                .balance(10000L)
                 .build();
 
         fakeAccountRepository.save(account);
@@ -58,7 +58,7 @@ class AccountServiceTest {
 
     @DisplayName("id 에 해당하는 계좌를 찾아준다.")
     @Test
-    void getById(){
+    void getByIdSuccessTest(){
         // given -> init
 
         // when
@@ -70,6 +70,19 @@ class AccountServiceTest {
         assertThat(account.getName()).isEqualTo("나라사랑계좌");
         assertThat(account.getPassword()).isEqualTo("1q2w3e4r!@");
         assertThat(account.getBalance()).isEqualTo(0L);
+    }
+
+    @DisplayName("amount를 계좌에 입금하면 기존잔고에 amount만큼 잔고가 증가한다.")
+    @Test
+    void depositSuccessTest(){
+        // given
+        long amount = 10000L;
+
+        // when
+        Account account = accountService.deposit(1L, amount);
+
+        // then
+        assertThat(account.getBalance()).isEqualTo(10000L);
     }
 
     private AccountCreate getAccountCreate() {
