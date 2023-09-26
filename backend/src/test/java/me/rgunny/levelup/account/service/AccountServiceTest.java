@@ -3,6 +3,7 @@ package me.rgunny.levelup.account.service;
 import me.rgunny.levelup.account.domain.Account;
 import me.rgunny.levelup.account.domain.AccountCreate;
 import me.rgunny.levelup.mock.FakeAccountRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -96,6 +97,19 @@ class AccountServiceTest {
 
         // then
         assertThat(account.getBalance()).isEqualTo(0L);
+    }
+
+    @DisplayName("amount를 계좌에서 출금할 때 기존잔고보다 amount 가 초과하면 예외가 발생한다.")
+    @Test
+    void withdrawOccurExceptionWhenExceedBalance(){
+        // given
+        long amount = 20000L;
+
+        // when
+        // then
+        Assertions.assertThatThrownBy(() -> accountService.withdraw(2L, 20000L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("출금 금액이 잔고를 초과할 수 없습니다.");
     }
 
     private AccountCreate getAccountCreate() {
