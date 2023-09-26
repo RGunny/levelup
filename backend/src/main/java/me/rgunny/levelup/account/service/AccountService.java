@@ -2,6 +2,7 @@ package me.rgunny.levelup.account.service;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import me.rgunny.levelup.account.common.domain.exception.ResourceNotFoundException;
 import me.rgunny.levelup.account.domain.Account;
 import me.rgunny.levelup.account.domain.AccountCreate;
 import me.rgunny.levelup.account.domain.AccountUpdate;
@@ -29,5 +30,12 @@ public class AccountService {
         Account account = getById(id);
         account = account.update(accountUpdate);
         return accountRepository.save(account);
+    }
+
+    public Account deposit(Long id, long amount) {
+        Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Accounts", id));
+        account = account.deposit(amount);
+        account = accountRepository.save(account);
+        return account;
     }
 }
