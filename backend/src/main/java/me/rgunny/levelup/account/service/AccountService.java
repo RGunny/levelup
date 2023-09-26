@@ -38,4 +38,11 @@ public class AccountService {
         account = accountRepository.save(account);
         return account;
     }
+
+    public Account withdraw(Long id, long amount) {
+        Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Accounts", id));
+        account = account.withdraw(amount);
+        account = accountRepository.save(account);
+        return account;
+    }
 }
