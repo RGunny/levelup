@@ -8,6 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AccountServiceTest {
@@ -110,6 +114,33 @@ class AccountServiceTest {
         Assertions.assertThatThrownBy(() -> accountService.withdraw(2L, 20000L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("출금 금액이 잔고를 초과할 수 없습니다.");
+    }
+
+    @DisplayName("동시에 100번 출금할 경우 동시성 제어를 위한 테스트")
+    @Test
+    void withdrawConcurrentTest() throws InterruptedException {
+        // given
+        int threadCount = 100;
+        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+        CountDownLatch countDownLatch = new CountDownLatch(threadCount);
+
+        // when
+        for (int i = 0; i < threadCount; i++) {
+            int finalI = i;
+            executorService.submit(() -> {
+                try {
+                    Account a = accountService.withdraw(2L, 100L);
+                } finally {
+                    countDownLatch.countDown();
+                }
+            });
+        }
+
+        countDownLatch.await();
+        Account account = accountService.getById(2L);
+
+        // then
+        assertThat(account.getBalance()).isEqualTo(0L);
     }
 
     private AccountCreate getAccountCreate() {
