@@ -14,17 +14,22 @@ public class AccountRepositoryImpl implements AccountRepository {
     private final AccountJpaRepository accountJpaRepository;
 
     @Override
+    public Account save(Account account) {
+        return accountJpaRepository.save(AccountEntity.from(account)).toModel();
+    }
+
+    @Override
     public Optional<Account> findById(Long id) {
         return accountJpaRepository.findById(id).map(AccountEntity::toModel);
     }
 
     @Override
-    public Optional<Account> findByIdWithPessimisticLock(Long id) {
-        return accountJpaRepository.findByIdWithPessimisticLock(id).map(AccountEntity::toModel);
+    public Optional<Account> findByIdUsingPessimisticLock(Long id) {
+        return accountJpaRepository.findByIdUsingPessimisticLock(id).map(AccountEntity::toModel);
     }
 
     @Override
-    public Account save(Account account) {
-        return accountJpaRepository.save(AccountEntity.from(account)).toModel();
+    public Optional<Account> findByIdUsingOptimisticLock(Long id) {
+        return accountJpaRepository.findByIdUsingOptimisticLock(id).map(AccountEntity::toModel);
     }
 }

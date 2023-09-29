@@ -6,9 +6,11 @@ import java.util.Optional;
 
 public interface AccountRepository {
 
+    Account save(Account account);
+
     Optional<Account> findById(Long id);
 
-    Optional<Account> findByIdWithPessimisticLock(Long id);
+    Optional<Account> findByIdUsingPessimisticLock(Long id);
 
-    Account save(Account account);
+    Optional<Account> findByIdUsingOptimisticLock(Long id);
 }

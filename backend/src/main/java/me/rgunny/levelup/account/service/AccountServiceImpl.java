@@ -58,4 +58,19 @@ public class AccountServiceImpl implements AccountService{
         account = accountRepository.save(account);
         return account;
     }
+    @Transactional
+    public Account withdrawUsingPessimisticLock(Long id, long amount) {
+        Account account = accountRepository.findByIdUsingPessimisticLock(id).orElseThrow(() -> new ResourceNotFoundException("Accounts", id));
+        account = account.withdraw(amount);
+        account = accountRepository.save(account);
+        return account;
+    }
+    @Transactional
+    public Account withdrawUsingOptimisticLock(Long id, long amount) {
+        Account account = accountRepository.findByIdUsingOptimisticLock(id).orElseThrow(() -> new ResourceNotFoundException("Accounts", id));
+        account = account.withdraw(amount);
+        account = accountRepository.save(account);
+        return account;
+    }
+
 }

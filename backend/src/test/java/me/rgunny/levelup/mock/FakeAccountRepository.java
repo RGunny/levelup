@@ -18,7 +18,12 @@ public class FakeAccountRepository implements AccountRepository {
     }
 
     @Override
-    public Optional<Account> findByIdWithPessimisticLock(Long id) {
+    public Optional<Account> findByIdUsingPessimisticLock(Long id) {
+        return accountList.stream().filter(account -> account.getId().equals(id)).findAny();
+    }
+
+    @Override
+    public Optional<Account> findByIdUsingOptimisticLock(Long id) {
         return accountList.stream().filter(account -> account.getId().equals(id)).findAny();
     }
 

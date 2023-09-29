@@ -14,14 +14,14 @@ import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AccountServiceImplTest {
+class AccountServiceTest {
 
-    private AccountServiceImpl accountServiceImpl;
+    private AccountServiceImpl accountService;
 
     @BeforeEach
     void init() {
         FakeAccountRepository fakeAccountRepository = new FakeAccountRepository();
-        accountServiceImpl = AccountServiceImpl.builder()
+        accountService = AccountServiceImpl.builder()
                 .accountRepository(fakeAccountRepository)
                 .build();
 
@@ -51,7 +51,7 @@ class AccountServiceImplTest {
         AccountCreate accountCreate = getAccountCreate();
 
         // when
-        Account account = accountServiceImpl.create(accountCreate);
+        Account account = accountService.create(accountCreate);
 
         // then
         assertThat(account.getId()).isEqualTo(1L);
@@ -67,7 +67,7 @@ class AccountServiceImplTest {
         // given -> init
 
         // when
-        Account account = accountServiceImpl.getById(1L);
+        Account account = accountService.getById(1L);
 
         // then
         assertThat(account.getId()).isEqualTo(1L);
@@ -84,7 +84,7 @@ class AccountServiceImplTest {
         long amount = 10000L;
 
         // when
-        Account account = accountServiceImpl.deposit(1L, amount);
+        Account account = accountService.deposit(1L, amount);
 
         // then
         assertThat(account.getBalance()).isEqualTo(10000L);
@@ -97,7 +97,7 @@ class AccountServiceImplTest {
         long amount = 10000L;
 
         // when
-        Account account = accountServiceImpl.withdraw(2L, amount);
+        Account account = accountService.withdraw(2L, amount);
 
         // then
         assertThat(account.getBalance()).isEqualTo(0L);
@@ -111,7 +111,7 @@ class AccountServiceImplTest {
 
         // when
         // then
-        Assertions.assertThatThrownBy(() -> accountServiceImpl.withdraw(2L, 20000L))
+        Assertions.assertThatThrownBy(() -> accountService.withdraw(2L, 20000L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("출금 금액이 잔고를 초과할 수 없습니다.");
     }
@@ -126,10 +126,9 @@ class AccountServiceImplTest {
 
         // when
         for (int i = 0; i < threadCount; i++) {
-            int finalI = i;
             executorService.submit(() -> {
                 try {
-                    Account a = accountServiceImpl.withdrawUsingSynchronized(2L, 100L);
+                    Account account = accountService.withdrawUsingSynchronized(2L, 100L);
                 } finally {
                     countDownLatch.countDown();
                 }
@@ -137,33 +136,7 @@ class AccountServiceImplTest {
         }
 
         countDownLatch.await();
-        Account account = accountServiceImpl.getById(2L);
-
-        // then
-        assertThat(account.getBalance()).isEqualTo(0L);
-    }
-
-    @DisplayName("동시에 100번 출금할 경우 pessimistic lock을 사용한 동시성 제어를 위한 테스트")
-    @Test
-    void withdrawUsingPessimisticLockConcurrentTest() throws InterruptedException {
-        // given
-        int threadCount = 100;
-        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
-        CountDownLatch countDownLatch = new CountDownLatch(threadCount);
-
-        // when
-        for (int i = 0; i < threadCount; i++) {
-            executorService.submit(() -> {
-                try {
-                    Account a = accountServiceImpl.withdrawUsingSynchronized(2L, 100L);
-                } finally {
-                    countDownLatch.countDown();
-                }
-            });
-        }
-
-        countDownLatch.await();
-        Account account = accountServiceImpl.getById(2L);
+        Account account = accountService.getById(2L);
 
         // then
         assertThat(account.getBalance()).isEqualTo(0L);
