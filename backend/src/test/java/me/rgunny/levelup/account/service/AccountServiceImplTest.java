@@ -116,9 +116,9 @@ class AccountServiceImplTest {
                 .hasMessageContaining("출금 금액이 잔고를 초과할 수 없습니다.");
     }
 
-    @DisplayName("동시에 100번 출금할 경우 동시성 제어를 위한 테스트")
+    @DisplayName("동시에 100번 출금할 경우 synchronized를 사용한 동시성 제어 테스트")
     @Test
-    void withdrawConcurrentTest() throws InterruptedException {
+    void withdrawUsingSynchronizedConcurrentTest() throws InterruptedException {
         // given
         int threadCount = 100;
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
@@ -129,7 +129,33 @@ class AccountServiceImplTest {
             int finalI = i;
             executorService.submit(() -> {
                 try {
-                    Account a = accountServiceImpl.withdraw(2L, 100L);
+                    Account a = accountServiceImpl.withdrawUsingSynchronized(2L, 100L);
+                } finally {
+                    countDownLatch.countDown();
+                }
+            });
+        }
+
+        countDownLatch.await();
+        Account account = accountServiceImpl.getById(2L);
+
+        // then
+        assertThat(account.getBalance()).isEqualTo(0L);
+    }
+
+    @DisplayName("동시에 100번 출금할 경우 pessimistic lock을 사용한 동시성 제어를 위한 테스트")
+    @Test
+    void withdrawUsingPessimisticLockConcurrentTest() throws InterruptedException {
+        // given
+        int threadCount = 100;
+        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+        CountDownLatch countDownLatch = new CountDownLatch(threadCount);
+
+        // when
+        for (int i = 0; i < threadCount; i++) {
+            executorService.submit(() -> {
+                try {
+                    Account a = accountServiceImpl.withdrawUsingSynchronized(2L, 100L);
                 } finally {
                     countDownLatch.countDown();
                 }

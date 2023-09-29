@@ -8,5 +8,7 @@ public interface AccountRepository {
 
     Optional<Account> findById(Long id);
 
+    Optional<Account> findByIdWithPessimisticLock(Long id);
+
     Account save(Account account);
 }

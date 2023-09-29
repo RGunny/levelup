@@ -19,6 +19,11 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
+    public Optional<Account> findByIdWithPessimisticLock(Long id) {
+        return accountJpaRepository.findByIdWithPessimisticLock(id).map(AccountEntity::toModel);
+    }
+
+    @Override
     public Account save(Account account) {
         return accountJpaRepository.save(AccountEntity.from(account)).toModel();
     }
