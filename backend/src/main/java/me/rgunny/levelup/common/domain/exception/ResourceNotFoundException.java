@@ -1,4 +1,4 @@
-package me.rgunny.levelup.account.common.domain.exception;
+package me.rgunny.levelup.common.domain.exception;
 
 public class ResourceNotFoundException extends RuntimeException{
 

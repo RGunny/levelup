@@ -1,7 +1,7 @@
-package me.rgunny.levelup.account.common.controller;
+package me.rgunny.levelup.common.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.rgunny.levelup.account.common.domain.exception.ResourceNotFoundException;
+import me.rgunny.levelup.common.domain.exception.ResourceNotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
