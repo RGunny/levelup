@@ -128,7 +128,7 @@ class AccountServiceTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    Account account = accountService.withdrawUsingSynchronized(2L, 100L);
+                    accountService.withdrawUsingSynchronized(2L, 100L);
                 } finally {
                     countDownLatch.countDown();
                 }
