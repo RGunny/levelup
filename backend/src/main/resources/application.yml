@@ -7,12 +7,18 @@ spring:
   profiles:
     default: local
 
+#  datasource:
+#    url: jdbc:h2:mem:~/levelupApplication
+##    url: jdbc:h2:tcp://localhost/~/Study/h2/db/levelup
+#    username: sa
+#    password: sa
+#    driver-class-name: org.h2.Driver
+
   datasource:
-    url: jdbc:h2:mem:~/levelupApplication
-#    url: jdbc:h2:tcp://localhost/~/Study/h2/db/levelup
-    username: sa
-    password: sa
-    driver-class-name: org.h2.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/levelup
+    username: root
+    password: 1234
 
 # depend human error
   jpa:
