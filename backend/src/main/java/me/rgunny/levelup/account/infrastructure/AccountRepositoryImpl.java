@@ -19,6 +19,12 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
+    public Account saveAndFlush(Account account) {
+        return accountJpaRepository.saveAndFlush(AccountEntity.from(account)).toModel();
+    }
+
+
+    @Override
     public Optional<Account> findById(Long id) {
         return accountJpaRepository.findById(id).map(AccountEntity::toModel);
     }
@@ -28,8 +34,4 @@ public class AccountRepositoryImpl implements AccountRepository {
         return accountJpaRepository.findByIdUsingPessimisticLock(id).map(AccountEntity::toModel);
     }
 
-    @Override
-    public Optional<Account> findByIdUsingOptimisticLock(Long id) {
-        return accountJpaRepository.findByIdUsingOptimisticLock(id).map(AccountEntity::toModel);
-    }
 }

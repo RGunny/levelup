@@ -8,10 +8,10 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface AccountJpaRepository extends JpaRepository<AccountEntity, Long> {
+public interface AccountVersionJpaRepository extends JpaRepository<AccountVersionEntity, Long> {
 
-    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
-    @Query("select a from AccountEntity a where a.id=:id")
-    Optional<AccountEntity> findByIdUsingPessimisticLock(@Param("id") Long id);
+    @Lock(value = LockModeType.OPTIMISTIC)
+    @Query("select a from AccountVersionEntity a where a.id=:id")
+    Optional<AccountVersionEntity> findByIdUsingOptimisticLock(@Param("id") Long id);
 
 }

@@ -2,11 +2,13 @@ package me.rgunny.levelup.account.service;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import me.rgunny.levelup.account.common.domain.exception.ResourceNotFoundException;
 import me.rgunny.levelup.account.domain.Account;
 import me.rgunny.levelup.account.domain.AccountCreate;
 import me.rgunny.levelup.account.domain.AccountUpdate;
+import me.rgunny.levelup.account.infrastructure.AccountVersionEntity;
+import me.rgunny.levelup.account.infrastructure.AccountVersionJpaRepository;
 import me.rgunny.levelup.account.service.port.AccountRepository;
+import me.rgunny.levelup.common.domain.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,7 @@ import java.util.NoSuchElementException;
 public class AccountServiceImpl implements AccountService{
 
     private final AccountRepository accountRepository;
+    private final AccountVersionJpaRepository accountVersionJpaRepository;
 
     @Transactional(readOnly = true)
     public Account getById(Long id) {
@@ -51,13 +54,15 @@ public class AccountServiceImpl implements AccountService{
         account = accountRepository.save(account);
         return account;
     }
-    @Transactional
+
+//    @Transactional --> Spinrg AOP 프록시 기반 @Tranactional 과 synchronized 동시 사용 X
     public synchronized Account withdrawUsingSynchronized(Long id, long amount) {
         Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Accounts", id));
         account = account.withdraw(amount);
         account = accountRepository.save(account);
         return account;
     }
+
     @Transactional
     public Account withdrawUsingPessimisticLock(Long id, long amount) {
         Account account = accountRepository.findByIdUsingPessimisticLock(id).orElseThrow(() -> new ResourceNotFoundException("Accounts", id));
@@ -65,11 +70,13 @@ public class AccountServiceImpl implements AccountService{
         account = accountRepository.save(account);
         return account;
     }
+
     @Transactional
-    public Account withdrawUsingOptimisticLock(Long id, long amount) {
-        Account account = accountRepository.findByIdUsingOptimisticLock(id).orElseThrow(() -> new ResourceNotFoundException("Accounts", id));
-        account = account.withdraw(amount);
-        account = accountRepository.save(account);
+    public AccountVersionEntity withdrawUsingOptimisticLock(Long id, long amount) {
+        AccountVersionEntity account = accountVersionJpaRepository.findByIdUsingOptimisticLock(id).orElseThrow(() -> new ResourceNotFoundException("Accounts", id));
+        account.withdraw(amount);
+        accountVersionJpaRepository.saveAndFlush(account);
+
         return account;
     }
 

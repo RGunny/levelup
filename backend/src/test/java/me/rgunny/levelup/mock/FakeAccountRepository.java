@@ -22,11 +22,6 @@ public class FakeAccountRepository implements AccountRepository {
         return accountList.stream().filter(account -> account.getId().equals(id)).findAny();
     }
 
-    @Override
-    public Optional<Account> findByIdUsingOptimisticLock(Long id) {
-        return accountList.stream().filter(account -> account.getId().equals(id)).findAny();
-    }
-
     /**
      * JpaRepository save() fake 구현
      * TODO: create 와 update 구분하여 분리
@@ -42,6 +37,11 @@ public class FakeAccountRepository implements AccountRepository {
             accountList.add(account);
             return account;
         }
+    }
+
+    @Override
+    public Account saveAndFlush(Account account) {
+        return null;
     }
 
     private Account extractedFakeAccountBuilder(Account account) {

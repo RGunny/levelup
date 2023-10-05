@@ -1,7 +1,6 @@
 package me.rgunny.levelup.medium.account;
 
 import me.rgunny.levelup.account.domain.Account;
-import me.rgunny.levelup.account.facade.OptimisticLockAccountFacade;
 import me.rgunny.levelup.account.infrastructure.AccountEntity;
 import me.rgunny.levelup.account.infrastructure.AccountJpaRepository;
 import me.rgunny.levelup.account.service.AccountServiceImpl;
@@ -27,8 +26,6 @@ public class AccountServiceTest {
     @Autowired
     private AccountJpaRepository accountJpaRepository;
 
-    @Autowired
-    private OptimisticLockAccountFacade optimisticLockAccountFacade;
 
     @BeforeEach
     void init() {
@@ -59,14 +56,8 @@ public class AccountServiceTest {
         accountJpaRepository.save(account3);
     }
 
-//    @AfterEach
-//    public void delete() {
-//        accountJpaRepository.deleteAll();
-//    }
-
     @DisplayName("amount를 계좌에서 출금하면 기존잔고에서 amount만큼 잔고가 차감된다.")
     @Test
-//    @Rollback(value = false)
     void withdrawSuccessTest(){
         // given
         long amount = 10000L;
@@ -78,12 +69,12 @@ public class AccountServiceTest {
         assertThat(account.getBalance()).isEqualTo(0L);
     }
 
-    @DisplayName("동시에 100번 출금할 경우 synchronized를 사용한 동시성 제어 테스트")
+    @DisplayName("동시에 100번 출금할 경우 synchronized를 사용한 동시성 제어 성공 테스트")
     @Test
     void withdrawUsingSynchronizedConcurrentTest() throws InterruptedException {
         // given
         int threadCount = 100;
-        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+        ExecutorService executorService = Executors.newFixedThreadPool(32);
         CountDownLatch countDownLatch = new CountDownLatch(threadCount);
 
         // when
