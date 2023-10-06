@@ -1,4 +1,4 @@
-package me.rgunny.levelup.account.infrastructure;
+package me.rgunny.levelup.account.infrastructure.version;
 
 
 import jakarta.persistence.*;

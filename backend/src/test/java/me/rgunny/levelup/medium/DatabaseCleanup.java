@@ -36,12 +36,8 @@ public class DatabaseCleanup implements InitializingBean {
                 .map(e -> CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, e.getName()))
                 .toList();
         tableNames.addAll(entityNames);
-
-        for (int i = 0; i < tableNames.size(); i++) {
-            System.out.println("tableNames.get(i) = " + tableNames.get(i));
-        }
-
     }
+
     private boolean isEntity(final EntityType<?> e) {
         return null != e.getJavaType().getAnnotation(Entity.class);
     }
