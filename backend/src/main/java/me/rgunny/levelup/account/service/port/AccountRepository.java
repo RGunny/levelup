@@ -10,7 +10,6 @@ public interface AccountRepository {
 
     Account saveAndFlush(Account account);
 
-
     Optional<Account> findById(Long id);
 
     Optional<Account> findByIdUsingPessimisticLock(Long id);
