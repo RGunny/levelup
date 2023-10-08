@@ -15,8 +15,8 @@ import java.util.concurrent.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("test")
 @SpringBootTest
+@ActiveProfiles("test")
 public class OptimisticLockAccountFacadeTest {
 
     @Autowired

@@ -16,13 +16,10 @@ public class LettuceLockAccountFacade {
     }
 
     public void withdraw(Long key, Long quantity) throws InterruptedException {
-        System.out.println("LettuceLockAccountFacade.withdraw");
         while (!redisLockRepository.lock(key)) {
-            System.out.println("lock in and sleep");
-            Thread.sleep(100);
+            Thread.sleep(50);
         }
-        System.out.println("key = " + key + "  quantity" + quantity);
-        System.out.println();
+
         try {
             accountService.withdraw(key, quantity);
         } finally {

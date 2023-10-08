@@ -1,7 +1,7 @@
 package me.rgunny.levelup.medium.account.facade;
 
 import me.rgunny.levelup.account.domain.Account;
-import me.rgunny.levelup.account.facade.LettuceLockAccountFacade;
+import me.rgunny.levelup.account.facade.RedissonLockAccountFacade;
 import me.rgunny.levelup.account.service.port.AccountRepository;
 import me.rgunny.levelup.medium.DatabaseCleanup;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,13 +17,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class LettuceLockAccountFacadeTest {
+public class RedissonLockAccountFacadeTest {
 
     @Autowired
     private DatabaseCleanup databaseCleanup;
 
     @Autowired
-    private LettuceLockAccountFacade lettuceLockAccountFacade;
+    private RedissonLockAccountFacade redissonLockAccountFacade;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -62,7 +62,7 @@ public class LettuceLockAccountFacadeTest {
 
     @DisplayName("동시에 100번 출금할 경우 redis Lettuce lock을 사용한 동시성 제어를 위한 성공 테스트")
     @Test
-    void withdrawUsingLettuceLockConcurrentTest() throws InterruptedException {
+    void withdrawUsingRedissonLockConcurrentTest() throws InterruptedException {
         // given
         int threadCount = 100;
         ExecutorService executorService = Executors.newFixedThreadPool(32);
@@ -72,8 +72,8 @@ public class LettuceLockAccountFacadeTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    lettuceLockAccountFacade.withdraw(2L, 100L);
-                } catch (InterruptedException e) {
+                    redissonLockAccountFacade.withdraw(2L, 100L);
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 } finally {
                     countDownLatch.countDown();
@@ -90,7 +90,7 @@ public class LettuceLockAccountFacadeTest {
 
     @DisplayName("동시에 100번 출금할 경우 redis Lettuce lock을 사용한 동시성 제어를 위한 CompletableFuture 사용한 성공 테스트 ")
     @Test
-    void withdrawUsingLettuceLockConcurrentTest2() throws InterruptedException {
+    void withdrawUsingRedissonLockConcurrentTest2() throws InterruptedException {
         // given
         int threadCount = 100, successCount = 0;
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
@@ -100,8 +100,8 @@ public class LettuceLockAccountFacadeTest {
         for (int i = 0; i < threadCount; i++) {
             CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(() -> {
                 try {
-                    lettuceLockAccountFacade.withdraw(2L, 100L);
-                } catch (InterruptedException e) {
+                    redissonLockAccountFacade.withdraw(2L, 100L);
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
                 return "Thread: " + Thread.currentThread().getName();
@@ -127,6 +127,5 @@ public class LettuceLockAccountFacadeTest {
         assertThat(successCount).isEqualTo(100);
         assertThat(account.getBalance()).isEqualTo(0L);
     }
-
 
 }
