@@ -14,4 +14,9 @@ public interface AccountJpaRepository extends JpaRepository<AccountEntity, Long>
     @Query("select a from AccountEntity a where a.id=:id")
     Optional<AccountEntity> findByIdUsingPessimisticLock(@Param("id") Long id);
 
+    @Query(value = "select get_lock(:key, 3000)", nativeQuery = true)
+    void getLock(@Param("key") String key);
+
+    @Query(value = "select release_lock(:key)", nativeQuery = true)
+    void releaseLock(@Param("key") String key);
 }

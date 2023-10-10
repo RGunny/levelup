@@ -60,17 +60,6 @@ public class NamedLockAccountFacadeTest {
         accountRepository.save(account3);
     }
 
-    @DisplayName("")
-    @Test
-    void test(){
-        // given
-        namedLockAccountFacade.withdraw(2L, 100L);
-
-        // when
-
-        // then
-    }
-
     @DisplayName("동시에 100번 출금할 경우 Named lock을 사용한 동시성 제어를 위한 성공 테스트")
     @Test
     void withdrawUsingNamedLockConcurrentTest() throws InterruptedException {
