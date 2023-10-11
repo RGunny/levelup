@@ -1,10 +1,10 @@
 package me.rgunny.levelup.account.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class AccountCreate {
 
     private final Long id;
@@ -12,13 +12,14 @@ public class AccountCreate {
     private final String password;
     private final String name;
 
-    public static AccountCreate from(Account account) {
-        return AccountCreate.builder()
-                .id(account.getId())
-                .number(account.getNumber())
-                .password(account.getPassword())
-                .name(account.getName())
-                .build();
+    @Builder
+    public AccountCreate(@JsonProperty("id") Long id,
+                         @JsonProperty("number") String number,
+                         @JsonProperty("password") String password,
+                         @JsonProperty("name") String name) {
+        this.id = id;
+        this.number = number;
+        this.password = password;
+        this.name = name;
     }
-
 }
