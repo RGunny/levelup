@@ -1,4 +1,4 @@
-package me.rgunny.levelup.account.service;
+package me.rgunny.levelup.account.controller.port;
 
 import me.rgunny.levelup.account.domain.Account;
 import me.rgunny.levelup.account.domain.AccountCreate;

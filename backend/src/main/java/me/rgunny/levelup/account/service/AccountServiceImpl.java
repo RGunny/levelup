@@ -2,6 +2,7 @@ package me.rgunny.levelup.account.service;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import me.rgunny.levelup.account.controller.port.AccountService;
 import me.rgunny.levelup.account.domain.Account;
 import me.rgunny.levelup.account.domain.AccountCreate;
 import me.rgunny.levelup.account.domain.AccountUpdate;
@@ -17,7 +18,7 @@ import java.util.NoSuchElementException;
 @Service
 @RequiredArgsConstructor
 @Builder
-public class AccountServiceImpl implements AccountService{
+public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
     private final AccountVersionJpaRepository accountVersionJpaRepository;
