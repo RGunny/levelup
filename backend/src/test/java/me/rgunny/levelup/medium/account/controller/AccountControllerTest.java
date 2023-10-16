@@ -5,11 +5,18 @@ import me.rgunny.levelup.account.domain.Account;
 import me.rgunny.levelup.account.service.port.AccountRepository;
 import me.rgunny.levelup.medium.DatabaseCleanup;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -58,6 +65,24 @@ public class AccountControllerTest {
         accountRepository.save(account);
         accountRepository.save(account2);
         accountRepository.save(account3);
+    }
+
+    @DisplayName("계좌를 id로 조회할 수 있다.")
+    @Test
+    void getAccountByIdSuccessTest() throws Exception {
+        // given
+
+        // when
+        // then
+        mockMvc.perform(get("/api/accounts/1"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.number").value("0-1234-5678-9"))
+                .andExpect(jsonPath("$.password").value("1q2w3e4r!@"))
+                .andExpect(jsonPath("$.name").value("나라사랑계좌"))
+                .andExpect(jsonPath("$.balance").value(0L));
+
     }
 
 }
