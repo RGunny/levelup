@@ -1,6 +1,6 @@
 package me.rgunny.levelup.account.facade;
 
-import me.rgunny.levelup.account.service.AccountService;
+import me.rgunny.levelup.account.controller.port.AccountService;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
