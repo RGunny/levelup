@@ -1,7 +1,9 @@
 package me.rgunny.levelup.medium.account.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import me.rgunny.levelup.account.controller.AccountController;
 import me.rgunny.levelup.account.domain.Account;
+import me.rgunny.levelup.account.domain.AccountCreate;
 import me.rgunny.levelup.account.service.port.AccountRepository;
 import me.rgunny.levelup.medium.DatabaseCleanup;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,10 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,6 +32,8 @@ public class AccountControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
 
     @Autowired
     private AccountController accountController;
@@ -75,8 +81,34 @@ public class AccountControllerTest {
         // when
         // then
         mockMvc.perform(get("/api/accounts/1"))
-                .andExpect(status().isOk())
                 .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.number").value("0-1234-5678-9"))
+                .andExpect(jsonPath("$.password").value("1q2w3e4r!@"))
+                .andExpect(jsonPath("$.name").value("나라사랑계좌"))
+                .andExpect(jsonPath("$.balance").value(0L));
+
+    }
+
+    @DisplayName("계좌를 생성할 수 있다.")
+    @Test
+    void createAccountSuccessTest() throws Exception {
+        // given
+        AccountCreate accountCreate = AccountCreate.builder()
+                .id(1L)
+                .number("0-1234-5678-9")
+                .name("나라사랑계좌")
+                .password("1q2w3e4r!@")
+                .build();
+
+        // when
+        // then
+        mockMvc.perform(post("/api/accounts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(accountCreate)))
+                .andDo(print())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.number").value("0-1234-5678-9"))
                 .andExpect(jsonPath("$.password").value("1q2w3e4r!@"))
