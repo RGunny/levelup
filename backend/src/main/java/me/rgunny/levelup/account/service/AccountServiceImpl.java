@@ -13,8 +13,6 @@ import me.rgunny.levelup.common.domain.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.NoSuchElementException;
-
 @Service
 @RequiredArgsConstructor
 @Builder
@@ -25,7 +23,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Transactional(readOnly = true)
     public Account getById(Long id) {
-        return accountRepository.findById(id).orElseThrow(() -> new NoSuchElementException("해당 ID 에 해당하는 계좌를 찾을 수 없습니다."));
+        return accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Accounts", id));
     }
 
     @Transactional
