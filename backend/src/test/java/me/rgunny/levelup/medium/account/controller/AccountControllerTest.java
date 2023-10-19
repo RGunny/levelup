@@ -19,8 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -73,24 +72,6 @@ public class AccountControllerTest {
         accountRepository.save(account3);
     }
 
-    @DisplayName("계좌를 id로 조회할 수 있다.")
-    @Test
-    void getAccountByIdSuccessTest() throws Exception {
-        // given
-
-        // when
-        // then
-        mockMvc.perform(get("/api/accounts/1"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.number").value("0-1234-5678-9"))
-                .andExpect(jsonPath("$.password").value("1q2w3e4r!@"))
-                .andExpect(jsonPath("$.name").value("나라사랑계좌"))
-                .andExpect(jsonPath("$.balance").value(0L));
-
-    }
-
     @DisplayName("계좌를 생성할 수 있다.")
     @Test
     void createAccountSuccessTest() throws Exception {
@@ -114,6 +95,38 @@ public class AccountControllerTest {
                 .andExpect(jsonPath("$.password").value("1q2w3e4r!@"))
                 .andExpect(jsonPath("$.name").value("나라사랑계좌"))
                 .andExpect(jsonPath("$.balance").value(0L));
+
+    }
+
+    @DisplayName("계좌를 id로 조회할 수 있다.")
+    @Test
+    void getAccountByIdSuccessTest() throws Exception {
+        // given
+
+        // when
+        // then
+        mockMvc.perform(get("/api/accounts/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.number").value("0-1234-5678-9"))
+                .andExpect(jsonPath("$.password").value("1q2w3e4r!@"))
+                .andExpect(jsonPath("$.name").value("나라사랑계좌"))
+                .andExpect(jsonPath("$.balance").value(0L));
+
+    }
+
+    @DisplayName("존재하지 않는 id로 계좌를 조회할 경우 404 응답을 받는다.")
+    @Test
+    void getAccountByNotExistIdOccur404Exception() throws Exception {
+        // given
+
+        // when
+        // then
+        mockMvc.perform(get("/api/accounts/012345679"))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Accounts에서 ID12345679 을 찾을 수 없습니다."));
 
     }
 
