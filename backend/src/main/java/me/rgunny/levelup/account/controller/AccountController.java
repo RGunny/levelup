@@ -5,6 +5,7 @@ import me.rgunny.levelup.account.controller.port.AccountService;
 import me.rgunny.levelup.account.controller.response.AccountResponse;
 import me.rgunny.levelup.account.domain.Account;
 import me.rgunny.levelup.account.domain.AccountCreate;
+import me.rgunny.levelup.account.domain.AccountUpdate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,4 +31,9 @@ public class AccountController {
                 .body(AccountResponse.from(accountService.getById(id)));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<AccountResponse> changeById(@PathVariable Long id, @RequestBody AccountUpdate accountUpdate) {
+        return ResponseEntity.ok()
+                .body(AccountResponse.from(accountService.update(id, accountUpdate)));
+    }
 }
