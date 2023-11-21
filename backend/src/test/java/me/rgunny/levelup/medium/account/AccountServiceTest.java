@@ -56,6 +56,19 @@ public class AccountServiceTest {
         accountJpaRepository.save(account3);
     }
 
+    @DisplayName("amount를 계좌에 입금하면 기존잔고에 amount만큼 잔고가 증가한다.")
+    @Test
+    void depositSuccessTest(){
+        // given
+        long amount = 10000L;
+
+        // when
+        Account account = accountService.deposit(1L, amount);
+
+        // then
+        assertThat(account.getBalance()).isEqualTo(10000L);
+    }
+
     @DisplayName("amount를 계좌에서 출금하면 기존잔고에서 amount만큼 잔고가 차감된다.")
     @Test
     void withdrawSuccessTest(){
