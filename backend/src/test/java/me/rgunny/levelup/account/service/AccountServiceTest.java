@@ -2,6 +2,7 @@ package me.rgunny.levelup.account.service;
 
 import me.rgunny.levelup.account.domain.Account;
 import me.rgunny.levelup.account.domain.AccountCreate;
+import me.rgunny.levelup.common.domain.exception.BaseException;
 import me.rgunny.levelup.mock.FakeAccountRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AccountServiceTest {
 
@@ -75,6 +77,19 @@ class AccountServiceTest {
         assertThat(account.getName()).isEqualTo("나라사랑계좌");
         assertThat(account.getPassword()).isEqualTo("1q2w3e4r!@");
         assertThat(account.getBalance()).isEqualTo(0L);
+    }
+
+    @DisplayName("id에 해당하는 계좌를 찾을 수 없어 RESOURCE_NOT_FOUND_EXCEPTION 이 발생한다.")
+    @Test
+    void getByIdOccurResourceNotFoundException(){
+        // given
+
+        // when
+        // then
+        assertThatThrownBy(() -> accountService.getById(5L))
+                .isInstanceOf(BaseException.class)
+                .hasMessage("Accounts에서 ID5 을 찾을 수 없습니다.");
+
     }
 
     @DisplayName("amount를 계좌에 입금하면 기존잔고에 amount만큼 잔고가 증가한다.")
