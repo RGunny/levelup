@@ -17,7 +17,8 @@ public class BaseException extends RuntimeException {
     }
 
     public BaseException(String datasource, Long id, ErrorCode errorCode) {
-        super(datasource + "에서 ID" + id + " 을 찾을 수 없습니다.");
+        super("[" + errorCode + "] " + datasource + "에서 ID" + id + " 을 찾을 수 없습니다.");
+        this.errorCode = errorCode;
     }
 
 }
