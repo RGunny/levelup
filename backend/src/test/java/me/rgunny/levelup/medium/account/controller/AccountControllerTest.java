@@ -90,11 +90,11 @@ public class AccountControllerTest {
                 .content(objectMapper.writeValueAsString(accountCreate)))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.number").value("0-1234-5678-9"))
                 .andExpect(jsonPath("$.password").value("1q2w3e4r!@"))
                 .andExpect(jsonPath("$.name").value("나라사랑계좌"))
-                .andExpect(jsonPath("$.balance").value(0L));
+                .andExpect(jsonPath("$.balance").value(0));
 
     }
 
@@ -108,11 +108,11 @@ public class AccountControllerTest {
         mockMvc.perform(get("/api/accounts/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.number").value("0-1234-5678-9"))
                 .andExpect(jsonPath("$.password").value("1q2w3e4r!@"))
                 .andExpect(jsonPath("$.name").value("나라사랑계좌"))
-                .andExpect(jsonPath("$.balance").value(0L));
+                .andExpect(jsonPath("$.balance").value(0));
 
     }
 
@@ -123,11 +123,10 @@ public class AccountControllerTest {
 
         // when
         // then
-        mockMvc.perform(get("/api/accounts/012345679"))
+        mockMvc.perform(get("/api/accounts/12345679"))
                 .andDo(print())
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("Accounts에서 ID12345679 을 찾을 수 없습니다."));
-
+                .andExpect(content().string("[RESOURCE_NOT_FOUND_EXCEPTION] Accounts에서 ID12345679 을 찾을 수 없습니다."));
     }
 
 }
