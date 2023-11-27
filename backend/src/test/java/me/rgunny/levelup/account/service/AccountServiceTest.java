@@ -88,7 +88,7 @@ class AccountServiceTest {
         // then
         assertThatThrownBy(() -> accountService.getById(5L))
                 .isInstanceOf(BaseException.class)
-                .hasMessage("Accounts에서 ID5 을 찾을 수 없습니다.");
+                .hasMessage("[RESOURCE_NOT_FOUND_EXCEPTION] Accounts에서 ID5 을 찾을 수 없습니다.");
 
     }
 
