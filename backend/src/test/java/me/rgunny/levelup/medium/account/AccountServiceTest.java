@@ -4,6 +4,7 @@ import me.rgunny.levelup.account.domain.Account;
 import me.rgunny.levelup.account.infrastructure.AccountEntity;
 import me.rgunny.levelup.account.infrastructure.AccountJpaRepository;
 import me.rgunny.levelup.account.service.AccountServiceImpl;
+import me.rgunny.levelup.common.domain.exception.BaseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.concurrent.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -54,6 +56,35 @@ public class AccountServiceTest {
         accountJpaRepository.save(account);
         accountJpaRepository.save(account2);
         accountJpaRepository.save(account3);
+    }
+
+
+    @DisplayName("id 에 해당하는 계좌를 찾아준다.")
+    @Test
+    void getByIdSuccessTest(){
+        // given -> init
+
+        // when
+        Account account = accountService.getById(1L);
+
+        // then
+        assertThat(account.getId()).isEqualTo(1L);
+        assertThat(account.getNumber()).isEqualTo("0-1234-5678-9");
+        assertThat(account.getName()).isEqualTo("나라사랑계좌");
+        assertThat(account.getPassword()).isEqualTo("1q2w3e4r!@");
+        assertThat(account.getBalance()).isEqualTo(0L);
+    }
+
+    @DisplayName("id에 해당하는 계좌를 찾을 수 없어 RESOURCE_NOT_FOUND_EXCEPTION 이 발생한다.")
+    @Test
+    void getByIdOccurResourceNotFoundException(){
+        // given
+
+        // when
+        // then
+        assertThatThrownBy(() -> accountService.getById(5L))
+                .isInstanceOf(BaseException.class)
+                .hasMessage("[RESOURCE_NOT_FOUND_EXCEPTION] Accounts에서 ID5 을 찾을 수 없습니다.");
     }
 
     @DisplayName("amount를 계좌에 입금하면 기존잔고에 amount만큼 잔고가 증가한다.")
