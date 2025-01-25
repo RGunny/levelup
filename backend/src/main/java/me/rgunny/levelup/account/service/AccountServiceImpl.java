@@ -6,7 +6,6 @@ import me.rgunny.levelup.account.controller.port.AccountService;
 import me.rgunny.levelup.account.domain.Account;
 import me.rgunny.levelup.account.domain.AccountCreate;
 import me.rgunny.levelup.account.domain.AccountUpdate;
-import me.rgunny.levelup.account.infrastructure.producer.AccountProducer;
 import me.rgunny.levelup.account.infrastructure.version.AccountVersionEntity;
 import me.rgunny.levelup.account.infrastructure.version.AccountVersionJpaRepository;
 import me.rgunny.levelup.account.service.port.AccountRepository;
@@ -23,7 +22,6 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
     private final AccountVersionJpaRepository accountVersionJpaRepository;
-    private final AccountProducer accountProducer;
 
     @Transactional(readOnly = true)
     public Account getById(Long id) {
